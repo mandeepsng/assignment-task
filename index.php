@@ -11,10 +11,11 @@
 class Singleton {
     
     // @TODO Implement Singleton functionality
-    
+    public ?string $value;
 
-    private function __construct(){
+    private function __construct(string $value){
         echo "connection is done";
+        $this->value =$value;
     }
 
     /**
@@ -24,7 +25,12 @@ class Singleton {
      */
     public static function userEcho($name) {
         // @TODO Validate & sanitize $name
-        echo "The value of 'name' is '{$name}'";
+        if($name !=''){
+            $newstr = filter_var($name,FILTER_SANITIZE_STRING);
+            echo "The value of 'name' is '{$newstr}'";
+        }else{
+            echo "Please enter Name";
+        }
     }
     
     /**
@@ -44,7 +50,12 @@ class Singleton {
      */
     public static function userFile($path) {
         // @TODO Validate & sanitize $path
-        readfile($path);
+        if($path !=''){
+            $newPath = filter_var($path, FILTER_SANITIZE_URL);
+            readfile($newPath);
+        }else{
+            echo "Please enter file path";
+        }
     }
     
     /**
@@ -52,6 +63,10 @@ class Singleton {
      */
     public static function nestedConditions() {
         // @TODO Untangle nested conditions
+        $conditionA = 'A';        
+        $conditionB = 'B';        
+        $conditionC = 'C';        
+
         if ($conditionA) {
             if ($conditionB) {
                 if ($conditionC) {
@@ -73,6 +88,8 @@ class Singleton {
      * @return boolean
      */
     public static function returnStatements() {
+
+        $conditionA = 'AB';
         // @TODO Fix
         if ($conditionA) {
             echo 'A';
@@ -86,6 +103,8 @@ class Singleton {
      * Null coalescing
      */
     public static function nullCoalescing() {
+        $_GET['name'] = "Mandeep Singh";
+        $_POST['name'] = "Mandeep Dev";
         // @TODO Simplify
         if (isset($_GET['name'])) {
             $name = $_GET['name'];
@@ -102,6 +121,10 @@ class Singleton {
      */
     public static function methodChained() {
         // @TODO Implement method chaining
+
+        return "This is = ".$this->value;
+
+
     }
     
     /**
@@ -133,7 +156,14 @@ class Singleton {
      */
     public static function regexTest($time24Hour) {
         // @TODO Implement RegEx and return type; validate & sanitize input
-        return preg_match('%%', $time24Hour);
+        $res = preg_match('#^([01]?[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?$#', $time24Hour);
+        if($res){
+            return "valid time ";
+        }else{
+            
+            return "invalid time ";
+        }
+        // return preg_match('%%', $time24Hour);
     }
     
 }
@@ -143,6 +173,30 @@ class Singleton {
 
 // printing output
 
-$userEcho = Singleton::userEcho('Mandeep Singh');
-$userQuery = Singleton::userQuery('Mandeep Singh');
-$userFile = Singleton::userFile('./read.md');
+// $userEcho = Singleton::userEcho('');  // output Please enter Name
+// $userEcho = Singleton::userEcho('Mandeep Singh');  // output PThe value of 'name' is 'Mandeep Singh'
+
+// $userQuery = Singleton::userQuery('Mandeep Singh'); // output 
+
+// $userFile = Singleton::userFile('');  // output Please enter file path
+// $userFile = Singleton::userFile('./read.md');
+
+
+// $nestedConditions = Singleton::nestedConditions();
+// $returnStatements = Singleton::returnStatements();
+
+// $nullCoalescing = Singleton::nullCoalescing();
+// echo $nullCoalescing;
+
+$methodChained = Singleton::checkValue('stringA')->methodChained();
+
+print_r($methodChained);
+
+
+// $methodChained = Singleton::methodChained();
+
+// $checkValue = Singleton::checkValue('');
+// print_r($checkValue);
+
+// $regexTest = Singleton::regexTest('77:59:59');
+// print_r($regexTest);
