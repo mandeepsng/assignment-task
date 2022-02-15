@@ -13,9 +13,11 @@ class Singleton {
     // @TODO Implement Singleton functionality
     public ?string $value;
 
+    private static $data = array();
+
     private function __construct(string $value){
         echo "connection is done";
-        $this->value =$value;
+        $this->value = $value;
     }
 
     /**
@@ -28,6 +30,8 @@ class Singleton {
         if($name !=''){
             $newstr = filter_var($name,FILTER_SANITIZE_STRING);
             echo "The value of 'name' is '{$newstr}'";
+            $this->name = $newstr;
+            return $this;
         }else{
             echo "Please enter Name";
         }
@@ -40,7 +44,14 @@ class Singleton {
      */
     public static function userQuery($name) {
         // @TODO Validate & sanitize $name
-        mysql_query("SELECT * FROM `test` WHERE `name` = '{$name}' LIMIT 1");
+        try{
+            $db = new mysqli('localhost', 'root', '', 'interview');
+            $sql = mysqli_query($db, "SELECT * FROM `test` WHERE `name` = '{$name}' LIMIT 1");
+        }catch(Exception $e){
+            echo "error is ".$e->getMessage();
+        }
+
+
     }
     
     /**
@@ -53,6 +64,8 @@ class Singleton {
         if($path !=''){
             $newPath = filter_var($path, FILTER_SANITIZE_URL);
             readfile($newPath);
+            $this->readfile = $newPath;
+            return $this;
         }else{
             echo "Please enter file path";
         }
@@ -119,14 +132,18 @@ class Singleton {
     /**
      * Method chaining
      */
-    public static function methodChained() {
+    public static function methodChained($name, $input) {
         // @TODO Implement method chaining
-
-        return "This is = ".$this->value;
-
+        self::$data[$name] = $input;
+        return self;
 
     }
-    
+
+    public static function get($name)
+    {
+        echo self::$data[$name].' - get method';
+    }
+
     /**
      * Immutables are hard to find
      */
@@ -188,7 +205,7 @@ class Singleton {
 // $nullCoalescing = Singleton::nullCoalescing();
 // echo $nullCoalescing;
 
-$methodChained = Singleton::checkValue('stringA')->methodChained();
+$methodChained = Singleton::methodChained('name', 'Mandeep')->get('name'); // ahmed - get method
 
 print_r($methodChained);
 
