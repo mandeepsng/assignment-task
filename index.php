@@ -147,7 +147,7 @@ class Singleton {
     /**
      * Immutables are hard to find
      */
-    public static function checkValue($value) {
+    public static function checkValue(string $value) {
         $result = null;
         
         // @TODO Make all the immutable values (int, string) in this class 
@@ -205,9 +205,9 @@ class Singleton {
 // $nullCoalescing = Singleton::nullCoalescing();
 // echo $nullCoalescing;
 
-$methodChained = Singleton::methodChained('name', 'Mandeep')->get('name'); // ahmed - get method
+// $methodChained = Singleton::methodChained('name', 'Mandeep')->get('name'); // ahmed - get method
 
-print_r($methodChained);
+// print_r($methodChained);
 
 
 // $methodChained = Singleton::methodChained();
